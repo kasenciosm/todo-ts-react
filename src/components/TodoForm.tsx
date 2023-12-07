@@ -12,6 +12,7 @@ interface TodoFormProps {
 export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) => {
     const [form, setForm] = useState<Todo>({ id: '', title: '', description: '', completed: false })
 
+
     useEffect(() => {
         if (todo) {
             setForm(todo)
@@ -39,9 +40,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) =>
         }
 
         setForm({ id: '', title: '', description: '', completed: false })
-
     }
-
     return (
         <form
             className="form"

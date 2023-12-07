@@ -57,6 +57,10 @@
 }
 
 .form-description textarea {
+  padding: .5rem;
+}
+
+.form-description textarea {
   border: none;
   border-radius: .3rem;
   background-color: rgb(219, 219, 219);

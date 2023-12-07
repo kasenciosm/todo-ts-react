@@ -1,4 +1,3 @@
-
 import { ListOfTodos, Todo, TodoId } from './type'
 import { MdOutlineDone } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -12,6 +11,7 @@ interface List {
 }
 
 const TodoList: React.FC<List> = ({ todos, onRemove, onToggleCompleted, onEdit }) => {
+
     const handleRemove = (id: string) => {
         onRemove({ id })
     }
