@@ -11,6 +11,7 @@ interface TodoFormProps {
 
 export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) => {
     const [form, setForm] = useState<Todo>({ id: '', title: '', description: '', completed: false })
+    const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
 
     useEffect(() => {
@@ -25,14 +26,34 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) =>
 
     const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target
+
+        const newErrors = { ...errors }
+        delete newErrors[name]
+
         setForm({
             ...form,
             [name]: value
         })
+        setErrors(newErrors)
     }
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault()
+
+        const newErrors: { [key: string]: string } = {};
+        if (/^\s*$/.test(form.title)) {
+            newErrors.title = 'El título no puede estar vacío'
+        }
+        if (/^\s*$/.test(form.description)) {
+            newErrors.description = 'La descripción no puede estar vacía'
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+
         if (todo) {
             update(form)
         } else {
@@ -40,6 +61,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) =>
         }
 
         setForm({ id: '', title: '', description: '', completed: false })
+        setErrors({})
     }
     return (
         <form
@@ -56,6 +78,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) =>
                     required
                     onChange={handleInput} />
             </div>
+            {errors.title && <p style={{ color: 'red', fontSize: '.5rem', marginTop: '0' }}>{errors.title}</p>}
             <div className="form-description">
                 <label>Descripcion:</label>
                 <textarea
@@ -64,6 +87,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onSubmit, todo, update }) =>
                     required
                     onChange={handleInput} />
             </div>
+            {errors.description && <p style={{ color: 'red', fontSize: '.5rem', margin: '0' }}>{errors.description}</p>}
             <button type="submit"
                 disabled={!form.title || !form.description}>
                 Save
